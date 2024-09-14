@@ -1,9 +1,15 @@
 import speech_recognition as sr
 from pyht import Client, TTSOptions, Format
 from io import BytesIO
+import json
 
+with open('cred.json') as f:
+    config = json.load(f)
+
+API_ID = config["PLAYHT_API_ID"]
+API_KEY = config["PLAYHT_API_KEY"]
 # Initialize PlayHT API with your credentials
-client = Client("blPzg46L59ZkOYEt66tj7L2s8B03", "62ec1ddae4f64b8e948041bc17bcdd70")
+client = Client(API_ID, API_KEY)
 
 # Configure TTS options
 options = TTSOptions(
