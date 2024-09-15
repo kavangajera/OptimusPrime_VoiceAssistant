@@ -6,8 +6,11 @@ import webbrowser
 import os
 from datetime import datetime
 from genai import chat_session
-
+from news import fetch_news
 # Function to open websites based on recognized text
+firefox_path = 'C:/Program Files/Mozilla Firefox/firefox.exe'
+webbrowser.register('firefox', None, webbrowser.BackgroundBrowser(firefox_path))
+firefox = webbrowser.get('firefox')
 def open_website(command):
     # Define a mapping of site names to URLs
     sites = {
@@ -16,13 +19,19 @@ def open_website(command):
         "twitter": "https://twitter.com",
         "github": "https://github.com",
         "wikipedia":"https://www.wikipedia.org/",
-        "chat GPT":"https://chatgpt.com/"
+        "chat GPT":"https://chatgpt.com/",
+        "student panel":"https://egov.ddit.ac.in/index.php?r=site/login",
+        
         # Add more sites as needed
     }
 
     # Find if a known site is in the command
     for site_name, url in sites.items():
         if site_name.lower() in command.lower():
+            if site_name == "student panel":
+                play_voice(text_to_optimus_voice("Opening e.g.o.v , Sir!"))
+                firefox.open(url)
+                return True
             print(f"Opening {site_name}...")
             audio_buffer = text_to_optimus_voice(f"Opening {site_name}, Sir.")
             play_voice(audio_buffer)
@@ -55,7 +64,10 @@ if __name__ == "__main__":
                 if "optimus" in recognized_text.lower() and "open" in recognized_text.lower():
                     if open_website(recognized_text):
                         continue  # Successfully opened a website, go to the next iteration
-
+                elif "optimus" in recognized_text.lower() and "news" in recognized_text.lower() and "sports" in recognized_text.lower():
+                    title = fetch_news("sports")
+                    play_voice(text_to_optimus_voice(title))
+                    
                 # Step 4: Check if the user wants to stop the program
                 elif "optimus" in recognized_text.lower() and "stop" in recognized_text.lower():
                     print("Optimus is stopping...")
