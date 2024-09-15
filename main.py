@@ -5,7 +5,8 @@ from text_to_speech import play_voice
 import webbrowser
 import os
 from datetime import datetime
-from genai import chat_session
+# from genai import chat_session
+from a21 import single_message_instruct
 from news import fetch_news
 # Function to open websites based on recognized text
 firefox_path = 'C:/Program Files/Mozilla Firefox/firefox.exe'
@@ -84,8 +85,8 @@ if __name__ == "__main__":
                     play_voice(text_to_optimus_voice(formatted_time))
                     
                 elif "optimus" in recognized_text.lower():
-                    response = chat_session.send_message(recognized_text[8:])
-                    play_voice(text_to_optimus_voice(response.text))
+                    response = single_message_instruct(recognized_text[8:])
+                    play_voice(text_to_optimus_voice(response))
                 
                 # play_voice(audio_buffer)
             else:

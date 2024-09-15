@@ -13,7 +13,8 @@ client = Client(API_ID, API_KEY)
 
 # Configure TTS options
 options = TTSOptions(
-    voice="s3://voice-cloning-zero-shot/27655673-a85e-426e-a85d-aee70948303c/original/manifest.json",  # Cloned voice
+        voice="s3://voice-cloning-zero-shot/cda55a5e-68ab-463a-9ffe-69fd1f646acd/original/manifest.json",
+  # Cloned voice
     sample_rate=44_100,
     format=Format.FORMAT_MP3,
     speed=0.75,
