@@ -3,6 +3,9 @@ import speech_recognition as sr
 from speech_to_text import listen_and_recognize, text_to_optimus_voice
 from text_to_speech import play_voice
 import webbrowser
+import os
+from datetime import datetime
+from genai import chat_session
 
 # Function to open websites based on recognized text
 def open_website(command):
@@ -48,20 +51,31 @@ if __name__ == "__main__":
             if recognized_text:
                 print(f"Recognized: {recognized_text}")
                 audio_buffer = text_to_optimus_voice(recognized_text)
-
                 # Step 3: Check if the user asked to open a site
                 if "optimus" in recognized_text.lower() and "open" in recognized_text.lower():
                     if open_website(recognized_text):
                         continue  # Successfully opened a website, go to the next iteration
 
                 # Step 4: Check if the user wants to stop the program
-                if "optimus" in recognized_text.lower() and "stop" in recognized_text.lower():
+                elif "optimus" in recognized_text.lower() and "stop" in recognized_text.lower():
                     print("Optimus is stopping...")
                     play_voice(text_to_optimus_voice("Thank you Autobots"))
                     break  # Exit the loop
-
-                # Play back the recognized speech in the Optimus Prime voice
-                play_voice(audio_buffer)
+                elif "optimus" in recognized_text.lower() and "music" in recognized_text.lower():
+                    play_voice(text_to_optimus_voice("Playing , music of my kind"))
+                    os.startfile(r"C:\Users\kavan\OneDrive\Documents\Rockstar Games\GTA V\User Music\pokemon theme song.mp3")
+                    break
+                elif "optimus" in recognized_text.lower() and "time" in recognized_text.lower():
+                    now = datetime.now()
+                    formatted_time = now.strftime("%I:%M %p")
+                    
+                    play_voice(text_to_optimus_voice(formatted_time))
+                    
+                elif "optimus" in recognized_text.lower():
+                    response = chat_session.send_message(recognized_text[8:])
+                    play_voice(text_to_optimus_voice(response.text))
+                
+                # play_voice(audio_buffer)
             else:
                 print("No text recognized, trying again...")
 
